@@ -4,23 +4,31 @@ date: 2023-12-20T07:26:13+01:00
 draft: false
 ---
 
-## The problem
+## Understanding the Challenge
 
-When you access your Kubernetes cluster your `~/.kube/config` file contains a lot of sensitive information. It contains the credentials to access your cluster, the cluster certificate and the cluster endpoint. This is typically fine if you're encrypting your harddrive and everything, but to be extra safe you shouldn't keep sensitive plain text files on your harddrive at all.
+Your `~/.kube/config` file is a treasure trove of sensitive information when accessing your Kubernetes cluster. It holds the keys to the kingdom: credentials, cluster certificate, and endpoint. While encrypting your hard drive offers a degree of protection, the ideal scenario is to avoid storing sensitive plain text files on your hard drive altogether.
 
-## The solution
+## Understanding the Basics
 
-There are industry standard solutions to problems like this like running Vault and getting credentials through there, but what if you're just a single person business and Vault is overkill for your usecase? Well, you can use 1Password to store your credentials and then use a script to fetch them and write them to your kubeconfig file.
+Here are some foundational concepts for beginners:
 
-In my case, I have a cluster that we'll call "my-cluster" and I keep my kubeconfig file in a cluster project directory along with various deployments, services and other definition files.
+- **Kubernetes (`kubectl`)**: A tool for managing applications on clusters of hosts.
+- **1Password**: A password manager for securely storing and accessing sensitive information.
+- **Shell Scripting**: The practice of writing scripts to automate tasks in Unix-like systems.
 
-1Password has a nifty set of commandline tools for extracting data from your vault. [You can find them here](https://support.1password.com/command-line-getting-started/) and they're available for most platforms. As I'm using macOS so I installed them with Homebrew.
+But if you were unaware of this, I bet this guide is not for you 😅
+
+## A Tailored Solution
+
+For larger organizations, industry-standard solutions like Vault are common. But what if you're a solo entrepreneur or a small team? Vault might be overkill for your needs. Enter 1Password, a convenient way to store credentials and integrate them into your kubeconfig file.
+
+I manage a cluster named "my-cluster" and store my kubeconfig file in a project directory that includes various deployment and definition files. 1Password's command-line tools are a godsend for extracting data from your vault. [Read about it here](https://developer.1password.com/docs/cli/get-started). Since I'm on macOS, I installed them via Homebrew:
 
 ```bash
 brew install 1password-cli
 ```
 
-Now let's process our kubernetes config file a bit. Here's a garbled version of my original file:
+Let's take a look at a sanitized version of my original kubeconfig file:
 
 ```yaml
 apiVersion: v1
@@ -44,17 +52,17 @@ users:
       client-key-data: "lots of fun characters a third time"
 ```
 
-The first step is to transfer these secret values to 1Password. You can go crazy here and transfer every single value if you wish, but the important ones - as far as I know - are the client-certificate-data, client-key-data and the certificate-authority-data. Open 1Password and create a new Password item. Add custom fields for each of the values you want to store. I named mine `client-certificate-data`, `client-key-data` and `certificate-authority-data`. Now copy the values from your kubeconfig file into the corresponding fields in 1Password.
+The first task is to transfer the crucial data - primarily the `client-certificate-data`, `client-key-data`, and `certificate-authority-data` - to 1Password. After creating a new Password item in 1Password, add custom fields for these values and fill them with data from your kubeconfig file.
 
 ![Store Kubeconfig values in 1Password](/images/1password-store-kubeconfig-values.png)
 
-As you can see, I also put a backup of the original kubeconfig file in 1Password. This is optional, but I like to have it there just in case.
+As a precaution, I also store a backup of the original kubeconfig file in 1Password, though this is optional.
 
-After you've saved your new Password item, you can get the secret reference for each of the values.
+Next, retrieve the secret reference for each value from 1Password:
 
-![Store Kubeconfig values in 1Password](/images/1password-copy-secret-reference.png)
+![Get references to Kubeconfig values in 1Password](/images/1password-copy-secret-reference.png)
 
-Rename your kubeconfig file by adding `.tpl` to the end of the filename and open it in an editor so you can replace each of the secret values with their corresponding secret reference. Here's what my file looks like after I've replaced the values:
+Rename your kubeconfig file, appending `.tpl` to its filename. Then, replace the secret values in this template file with their 1Password references:
 
 ```yaml
 apiVersion: v1
@@ -78,11 +86,11 @@ users:
       client-key-data: "op://omitted-vault-id/My Kubernetes Cluster/client-key-data"
 ```
 
-Now it's time for the magic sauce.
+### Automating the Magic
 
-When ever I want to play with my kuberentes cluster, I open a terminal. `kubectl` uses an environment variable called `KUBECONFIG`. Very fancy name. In my setup, this file should not exist when I don't have a terminal window open, and it should magically appear when ever I need it.
+When I need to work on my Kubernetes cluster, I use a terminal. The `kubectl` command relies on an environment variable named `KUBECONFIG`. In my system, this file is ephemeral, appearing when needed and vanishing afterward.
 
-First, let's solve the magic apperance of the file using the very fancy `op` cli tool.
+To automate its appearance, I use the `op` CLI tool:
 
 ```zsh
 my_cluster_kubeconfig_tpl=$HOME/Projects/my-cluster/kubeconfig-my-cluster.yaml.tpl
@@ -92,9 +100,7 @@ op inject -i $my_cluster_kubeconfig_tpl -o $my_cluster_kubeconfig
 export KUBECONFIG=$my_cluster_kubeconfig
 ```
 
-This will create and configure my kubeconfig yaml file and set the environment variable. All the secrets are fetched from 1Password and injected into the file, replacing the reference strings with the actual values.
-
-When `op` runs, 1Password appears and asks for either a fingerprint reader touch, or the master password. This is annoying if it happens when it's not needed, so let's add this simple if statement to the script:
+To avoid unnecessary authentication prompts from 1Password, I implemented a simple check:
 
 ```zsh
 my_cluster_kubeconfig_tpl=$HOME/Projects/my-cluster/kubeconfig-my-cluster.yaml.tpl
@@ -107,7 +113,7 @@ else
 fi
 ```
 
-Now, when I close my terminal window, I want to remove the file again. I also want to remove it if I close the terminal window and I'm the last one using it. To do this, let's leverage the `trap` command. This command allows us to run a function when the shell exits. We'll use this to remove the kubeconfig file when the shell exits.
+Ensuring the kubeconfig file disappears after use involves leveraging the `trap` command, which executes a function upon shell exit:
 
 ```zsh
 function cleanup_kubeconfig {
@@ -117,7 +123,7 @@ function cleanup_kubeconfig {
 trap cleanup_kubeconfig EXIT
 ```
 
-This will remove the generated kubeconfig when the terminal session ends. But what if I have multiple terminal windows open? I don't want to remove the kubeconfig file if I'm still using it in another window. To solve this, we'll create a temporary file for each session and check if there are any other session files remaining when the shell exits. If there are no other session files, we'll remove the kubeconfig file.
+To handle multiple terminal sessions, the cleanup function was modified to check for other active sessions before removing the kubeconfig file:
 
 ```zsh
 function cleanup_kubeconfig {
@@ -136,13 +142,11 @@ function cleanup_kubeconfig {
 trap cleanup_kubeconfig EXIT
 ```
 
-The only flaw with this approach is that if the terminal window crashes, the kubeconfig file will not be removed. I'm not sure how to solve this, but I'm open to suggestions.
+There's a minor caveat: if the terminal window crashes, the kubeconfig file might not get removed. I'm exploring solutions for this.
 
-Different terminals behave differently, but both iTerm (my favorite MacOS terminal) and the built-in terminal app seem to behave in a self-cleaning way in this scenaro. iTerm recreates the crashed session and keeps the reference to the trap file, and the built-in terminal app seems to remove the trap file when the session crashes but fails to remove the kubeconfig file. I'm not sure why this is. But this way, the insecure state only lasts until the next terminal session in my tests.
+Interestingly, iTerm and macOS's built-in terminal handle crashed sessions differently, with iTerm maintaining the trap file and the built-in terminal failing to remove the kubeconfig file. However, this security gap is temporary and resolves with the next terminal session.
 
-Now to tie this all together, I added the script to my `.zshrc` file.
-
-Here's the result:
+Finally, I incorporated the script into my `.zshrc` file for seamless integration:
 
 ```zsh
 # Create a unique temporary file for the session
@@ -176,4 +180,4 @@ function cleanup_kubeconfig {
 trap cleanup_kubeconfig EXIT
 ```
 
-I hope this is useful to someone. If you have any suggestions for improvements, please let me know in the comments.
+I hope this method proves helpful. If you have suggestions or improvements, I'd love to hear them in the comments.
