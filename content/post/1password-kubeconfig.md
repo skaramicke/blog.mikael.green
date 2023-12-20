@@ -5,9 +5,9 @@ draft: false
 categories: ["Kubernetes", "1Password", "Security"]
 ---
 
-## Understanding the Challenge
-
 Your `~/.kube/config` file is a treasure trove of sensitive information when accessing your Kubernetes cluster. It holds the keys to the kingdom: credentials, cluster certificate, and endpoint. While encrypting your hard drive offers a degree of protection, the ideal scenario is to avoid storing sensitive plain text files on your hard drive altogether.
+
+<!--more-->
 
 ## Understanding the Basics
 
