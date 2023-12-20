@@ -2,6 +2,7 @@
 title: "Securing kubectl config with 1Password"
 date: 2023-12-20T07:26:13+01:00
 draft: false
+categories: ["Kubernetes", "1Password", "Security"]
 ---
 
 ## Understanding the Challenge
