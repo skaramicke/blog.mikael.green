@@ -1,7 +1,7 @@
 ---
-title: Blog
+title: Blog Posts
 menus: main
-description: Blog posts for Hugo Blog on Cloudflare with Decap CMS
+description: Blog posts written by Mikael Grön
 ---
 
 ## Posts
