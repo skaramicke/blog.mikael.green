@@ -1,0 +1,85 @@
+backend:
+  name: github
+  branch: main
+  auth_endpoint: /auth
+  # Edit the following lines to match your Github repo and domain name
+  repo: skaramicke/hugo-with-cms
+  base_url: https://hugo-with-cms.mikael.green
+
+local_backend: true
+
+publish_mode: editorial_workflow
+
+media_folder: static/img
+public_folder: /img
+collections:
+  - name: "settings"
+    label: "Settings"
+    files:
+      - label: "Blog Listing"
+        name: "blog-list-settings"
+        file: "content/post/_index.md"
+        fields:
+          - label: "Title"
+            name: "title"
+            widget: "string"
+  - name: "post"
+    label: "Blog Post"
+    folder: "content/post"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - {
+          label: "Publish Date",
+          name: "date",
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          hint: "If set to a future date, you need to edit or publish something after that date to trigger the publishing of this post.",
+        }
+      - {
+          label: "Keywords",
+          name: "keywords",
+          widget: "string",
+          hint: "Comma separated list of keywords, used for search engines",
+        }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "string",
+          hint: "Short description of this post, used for search engines and sharing",
+        }
+      - { label: "Body", name: "body", widget: "markdown" }
+  - name: "page"
+    label: "Page"
+    folder: "content"
+    create: true
+    slug: "{{title}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - {
+          label: "Show this page in the menu",
+          name: "menus",
+          widget: "select",
+          multiple: false,
+          default: "main",
+          options:
+            [{ label: "Yes", value: "main" }, { label: "No", value: "" }],
+        }
+      - {
+          label: "Keywords",
+          name: "keywords",
+          widget: "string",
+          hint: "Comma separated list of keywords, used for search engines",
+        }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "string",
+          hint: "Short description of this page, used for search engines and sharing",
+        }
+      - { label: "Body", name: "body", widget: "markdown" }

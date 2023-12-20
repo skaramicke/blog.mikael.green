@@ -1,0 +1,10 @@
+github.com/CaiJimmy/hugo-theme-stack v2.6.0+incompatible h1:HOf88geWucQwmTmNCFgHNidVTXjv9jLz3UA72gyFQTE=
+github.com/CaiJimmy/hugo-theme-stack v2.6.0+incompatible/go.mod h1:Tacngkxf7u2kfufDzxoX7yqktykqc/Vi1LwJOHGE6Nw=
+github.com/Mitrichius/hugo-theme-anubis v0.0.0-20231204175953-57eb2998cf2e h1:oCnqB3lB2ZwWA8lDsCPWHrArSGx+/g4lqR1rX33hm/E=
+github.com/Mitrichius/hugo-theme-anubis v0.0.0-20231204175953-57eb2998cf2e/go.mod h1:FKD3NbdsQzL+cXsC3x99XD/t/Rd5EyhDlNBAxQhULbo=
+github.com/devcows/hugo-universal-theme v0.0.0-20230526111422-cf0336a17584 h1:N/0zYlU7y8vP8Af7nbD67Ca2VPC2Qu1IfRadvlIEg6s=
+github.com/devcows/hugo-universal-theme v0.0.0-20230526111422-cf0336a17584/go.mod h1:MqYH15Evmut/wgYkFi7ArsX+k44HfRrH675FbVLBkq0=
+github.com/tomowang/hugo-theme-tailwind v0.0.0-20231216164437-189d70081414 h1:kGpFupcw+OB49zQ1XmAyjy0hiXRKMmd7Sd1dWg4tXDc=
+github.com/tomowang/hugo-theme-tailwind v0.0.0-20231216164437-189d70081414/go.mod h1:iV6S2tqk04A+E3fBDgAL5CWBKXNv5CUxxXIbgq4nljw=
+github.com/zerostaticthemes/hugo-whisper-theme v0.0.0-20231126060839-511dcd7dca62 h1:VV5uTBQ06Xl75opWd3Kz060sabrRu7likvhF7c8VVmI=
+github.com/zerostaticthemes/hugo-whisper-theme v0.0.0-20231126060839-511dcd7dca62/go.mod h1:3pXj02L0BmVtBJxF3HK1rWyES1AYTzfH5q6+YTaYaQI=

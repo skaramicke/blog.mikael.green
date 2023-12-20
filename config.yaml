@@ -1,0 +1,29 @@
+baseURL: "https://hugo-with-cms.mikael.green/"
+languageCode: "en-us"
+title: "Hugo Blog with CMS"
+
+defaultContentLanguage: "en"
+style: default
+disqusShortname: "hugo-with-cms-mikael-green"
+googleAnalytics: "UA-XXXXX-X"
+
+params:
+  description: This is a template repository for setting up a new Hugo blog with Decap CMS
+  disabled_logo: true
+  logo_text: "Hugo Blog with Decap CMS on Cloudflare"
+  date_format: "Jan 2, 2006"
+  carouselHomepage:
+    enable: true
+    auto_play: true
+    slide_speed: 2000
+    pagination_speed: 1000
+  widgets:
+    search: false
+    categories: true
+    tags: true
+
+module:
+  imports:
+    - path: github.com/Mitrichius/hugo-theme-anubis
+      disable: false
+      theme: "hugo-theme-anubis"
