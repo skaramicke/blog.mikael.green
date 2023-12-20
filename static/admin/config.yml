@@ -3,8 +3,8 @@ backend:
   branch: main
   auth_endpoint: /auth
   # Edit the following lines to match your Github repo and domain name
-  repo: skaramicke/hugo-with-cms
-  base_url: https://hugo-with-cms.mikael.green
+  repo: skaramicke/blog.mikael.green
+  base_url: https://blog.mikael.green
 
 local_backend: true
 

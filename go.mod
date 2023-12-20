@@ -1,4 +1,4 @@
-module hugo-with-cms
+module blog.mikael.green
 
 go 1.21.4
 

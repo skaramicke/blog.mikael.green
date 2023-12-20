@@ -1,26 +1,17 @@
-baseURL: "https://hugo-with-cms.mikael.green/"
+baseURL: "https://blog.mikael.green/"
 languageCode: "en-us"
-title: "Hugo Blog with CMS"
+title: "Mikael Grön"
 
 defaultContentLanguage: "en"
 style: default
-disqusShortname: "hugo-with-cms-mikael-green"
+disqusShortname: "blog-mikael-green"
 googleAnalytics: "UA-XXXXX-X"
 
 params:
-  description: This is a template repository for setting up a new Hugo blog with Decap CMS
+  description:
   disabled_logo: true
-  logo_text: "Hugo Blog with Decap CMS on Cloudflare"
+  logo_text: "Blogs about anything"
   date_format: "Jan 2, 2006"
-  carouselHomepage:
-    enable: true
-    auto_play: true
-    slide_speed: 2000
-    pagination_speed: 1000
-  widgets:
-    search: false
-    categories: true
-    tags: true
 
 module:
   imports:
