@@ -4,8 +4,6 @@ date: 2024-01-17T08:55:28+01:00
 draft: false
 ---
 
-## tldr;
-
 Select and copy files in VSCode using [Copy Combined Markdown](https://marketplace.visualstudio.com/items?itemName=skaramicke.copy-combined-markdown) to easily provide context for ChatGPT and a gazillion other use cases.
 
 <!--more-->
