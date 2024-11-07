@@ -189,20 +189,4 @@ In an industry where agility and reliability are paramount, integrating your fro
 
 ---
 
-## Additional Resources
-
-- **Monorepo Tools:**
-  - [Lerna](https://lerna.js.org/): A tool for managing JavaScript projects with multiple packages.
-  - [Nx](https://nx.dev/): An extensible dev toolkit for monorepos.
-
-- **Case Studies:**
-  - [Google's Monorepo](https://research.google/pubs/pub45424/): Insights into how Google manages its codebase.
-  - [Facebook's Monorepo Strategy](https://engineering.fb.com/2019/05/02/core-data/monorepos-at-facebook/): An overview of Facebook's approach.
-
-- **Best Practices:**
-  - [Monorepo vs. Polyrepo](https://martinfowler.com/articles/monorepo-vs-polyrepo.html): An analysis by Martin Fowler.
-  - [Scaling Monorepos](https://bazel.build/): Information on using Bazel to build and test large codebases.
-
----
-
 By embracing these practices and strategies, your development team can navigate the complexities of modern application development with confidence and deliver exceptional products to your users.
